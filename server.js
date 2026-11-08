@@ -186,4 +186,55 @@ app.get('/admin.html',(req,res)=>{
  res.set('Cache-Control','no-store').sendFile(path.join(__dirname,'admin.html'));
 });
 app.get(/^\/[a-z-]+\.html$/,(req,res,next)=>{const file=path.basename(req.path);if(!fs.existsSync(path.join(__dirname,file)))return next();res.sendFile(path.join(__dirname,file))});
+
+app.get('/api/discord/news', async (req, res) => {
+  const token = process.env.DISCORD_BOT_TOKEN;
+  const channelId = process.env.DISCORD_NEWS_CHANNEL_ID;
+
+  if (!token || !channelId) {
+    return res.status(503).json({
+      error: 'Discord hírek nincsenek konfigurálva'
+    });
+  }
+
+  try {
+    const response = await fetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages?limit=10`,
+      {
+        headers: { Authorization: `Bot ${token}` },
+        signal: AbortSignal.timeout(8000)
+      }
+    );
+
+    if (!response.ok) {
+      return res.status(502).json({
+        error: 'Nem sikerült lekérni a Discord-híreket'
+      });
+    }
+
+    const messages = await response.json();
+
+    res.set('Cache-Control', 'public, max-age=60');
+
+    res.json({
+      messages: messages
+        .filter(m => m.content || m.attachments?.length)
+        .map(m => ({
+          id: m.id,
+          author: m.author?.global_name || m.author?.username || 'Ismeretlen',
+          content: m.content,
+          timestamp: m.timestamp,
+          images: (m.attachments || [])
+            .filter(a => a.content_type?.startsWith('image/'))
+            .map(a => a.url)
+        }))
+    });
+  } catch (error) {
+    console.error('Discord news:', error.message);
+    res.status(502).json({
+      error: 'A Discord-hírek átmenetileg nem elérhetők'
+    });
+  }
+});
+
 app.listen(PORT,()=>console.log(`Hungarian Military: ${BASE_URL}`));
