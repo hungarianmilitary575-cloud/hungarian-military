@@ -227,15 +227,3 @@ body .sidebar .nav-icon{display:inline-grid;place-items:center;width:26px;height
 @media(max-width:760px){.hm-owner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.hm-owner-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.hm-owners-top img{animation:none}}
-
-/* Belépőzene: kompakt hangerőszabályzó */
-.hm-volume-control{display:flex;align-items:center;gap:10px;color:#ddd4dd;font-size:13px;min-width:210px;flex:1;justify-content:flex-end}
-.hm-volume-control input{width:clamp(95px,14vw,170px);accent-color:var(--accent,#e82e4c);cursor:pointer}
-.hm-volume-control output{min-width:36px;text-align:right;font-variant-numeric:tabular-nums}
-@media(max-width:640px){.hm-volume-control{width:100%;justify-content:flex-start}}
-
-/* Feltűnőbb, könnyebben kattintható belépési beállítás */
-.hm-owners-remember{display:flex!important;align-items:center!important;justify-content:center!important;gap:16px!important;width:100%;box-sizing:border-box;padding:19px 22px!important;margin:22px 0 18px!important;background:rgba(255,255,255,.075)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:12px!important;color:#fff!important;font-size:clamp(16px,2vw,19px)!important;font-weight:650!important;line-height:1.5!important;cursor:pointer!important;min-height:70px!important;}
-.hm-owners-remember input[type=checkbox]{appearance:auto!important;accent-color:var(--accent,#ed263f)!important;width:25px!important;height:25px!important;min-width:25px!important;flex-shrink:0!important;cursor:pointer!important;}
-.hm-owners-remember:focus-within{outline:2px solid var(--accent,#ed263f);outline-offset:3px;}
-@media(max-width:600px){.hm-owners-remember{justify-content:flex-start!important;padding:15px!important;font-size:16px!important;}}

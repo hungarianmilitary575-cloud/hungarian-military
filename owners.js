@@ -45,15 +45,8 @@ const HM_OWNERS = [
  const note=document.getElementById('hm-music-note');
  if(!play||!stop||!host)return;
  const audio=document.createElement('audio');
- const volume=document.getElementById('hm-music-volume');
- const volumeValue=document.getElementById('hm-music-volume-value');
- const storedVolume=Number(localStorage.getItem('hm_music_volume'));
- const initialVolume=Number.isFinite(storedVolume)&&storedVolume>=0&&storedVolume<=100?storedVolume:50;
- audio.volume=initialVolume/100;
- if(volume){volume.value=String(initialVolume);if(volumeValue)volumeValue.textContent=initialVolume+'%';volume.addEventListener('input',()=>{const value=Math.max(0,Math.min(100,Number(volume.value)||0));audio.volume=value/100;if(volumeValue)volumeValue.textContent=value+'%';try{localStorage.setItem('hm_music_volume',String(value))}catch(e){}})}
- audio.preload='metadata';
+ audio.preload='none';
  audio.src='assets/belepozene.mp3';
- audio.addEventListener('canplay',()=>{if(note&&!audio.paused)return;if(note)note.textContent='A zene készen áll. Kattints a Zene indítása gombra.'});
  audio.style.display='none';
  host.replaceChildren(audio);
  function reset(){audio.pause();audio.currentTime=0;play.hidden=false;stop.hidden=true;play.setAttribute('aria-pressed','false')}
@@ -64,7 +57,7 @@ const HM_OWNERS = [
    if(note)note.textContent='A belépőzene lejátszása folyamatban.';
   }catch(error){
    reset();
-   if(note)note.textContent='A lejátszás nem indult. Ellenőrizd, hogy az assets/belepozene.mp3 fájl létezik és MP3 formátumú.';
+   if(note)note.textContent='A zene még nincs feltöltve. Helyezd a jogszerűen használható MP3 fájlt az assets/belepozene.mp3 helyre.';
   }
  });
  stop.addEventListener('click',reset);
