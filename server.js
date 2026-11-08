@@ -176,7 +176,8 @@ app.get('/api/founders/:id/avatar',async(req,res)=>{
   res.set('Cache-Control','public, max-age=300').json({avatar});
  }catch{res.json({avatar:null,reason:'discord_unavailable'})}
 });
-app.use('/assets',express.static(path.join(__dirname,'assets')));
+app.use('/assets', express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), { index: false }));
 app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'index.html')));
 // Az admin HTML-t is a szerver védi, nem csak a gombokat/API-kat.
 app.get('/admin.html',(req,res)=>{
